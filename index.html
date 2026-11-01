@@ -1,0 +1,165 @@
+
+
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Seven Offer | Seven Residence</title>
+
+<style>
+
+*{box-sizing:border-box}
+
+body{margin:0;background:#f4f5f1;color:#20352b;font-family:Arial,Tahoma,sans-serif}
+
+header{background:#183b30;color:white;padding:25px;text-align:center;border-bottom:4px solid #c8a96a}
+
+header h1{margin:0;font-size:27px}
+
+header p{color:#dfd2ad;margin:8px 0 0}
+
+main{max-width:850px;margin:22px auto;padding:0 14px}
+
+.card{background:white;padding:20px;border-radius:14px;margin-bottom:16px;box-shadow:0 3px 15px #0000000b}
+
+h2{font-size:19px;margin-top:0}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+label{display:block;font-size:13px;margin-bottom:6px}
+
+input,select{width:100%;padding:12px;border:1px solid #ccd7cf;border-radius:8px;font-size:16px}
+
+.result{background:#edf3ed;padding:13px;border-radius:9px;margin-top:10px}
+
+.result span{display:block;color:#63766a;font-size:12px}
+
+.result b{font-size:18px;color:#183b30}
+
+button{background:#183b30;color:white;border:0;border-radius:8px;padding:13px 20px;font-size:15px;margin-top:15px;width:100%}
+
+@media(max-width:550px){.grid{grid-template-columns:1fr}}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>SEVEN RESIDENCE</h1>
+
+<p>HARBY GROUP · SEVEN OFFER</p>
+
+</header>
+
+<main>
+
+<section class="card">
+
+<h2>بيانات الوحدة</h2>
+
+<div class="grid">
+
+<div><label>رقم المبنى</label><input id="building" placeholder="40B"></div>
+
+<div><label>رقم الوحدة</label><input id="unit" placeholder="B40-504"></div>
+
+<div><label>نوع الوحدة</label>
+
+<select id="type"><option>Type B</option><option>Type C</option></select></div>
+
+<div><label>الدور</label>
+
+<select id="floor"><option>Ground</option><option>First</option><option>Typical</option><option>Penthouse</option></select></div>
+
+<div><label>المساحة بالمتر</label><input id="area" type="number"></div>
+
+<div><label>مساحة الحديقة</label><input id="garden" type="number"></div>
+
+<div style="grid-column:1/-1"><label>السعر قبل الخصم بالجنيه</label><input id="price" type="number"></div>
+
+</div>
+
+</section>
+
+<section class="card">
+
+<h2>خطة السداد</h2>
+
+<div class="grid">
+
+<div><label>الخصم %</label><input id="discount" type="number" value="20"></div>
+
+<div><label>المقدم من السعر الأصلي %</label><input id="dp" type="number" value="20"></div>
+
+<div><label>مدة التقسيط بالسنوات</label><input id="years" type="number" value="5"></div>
+
+<div><label>الصيانة %</label><input id="maintenance" type="number" value="8"></div>
+
+</div>
+
+<div class="result"><span>السعر بعد الخصم</span><b id="net">—</b></div>
+
+<div class="result"><span>المقدم</span><b id="down">—</b></div>
+
+<div class="result"><span>الرصيد المتبقي</span><b id="balance">—</b></div>
+
+<div class="result"><span>القسط الربع سنوي</span><b id="installment">—</b></div>
+
+<div class="result"><span>الصيانة</span><b id="maint">—</b></div>
+
+<button onclick="window.print()">طباعة العرض / حفظ PDF</button>
+
+</section>
+
+</main>
+
+<script>
+
+const ids=['price','discount','dp','years','maintenance'];
+
+function money(n){return Number.isFinite(n)?Math.round(n).toLocaleString('en-US')+' EGP':'—'}
+
+function calculate(){
+
+const v=id=>Number(document.getElementById(id).value);
+
+const price=v('price');
+
+const net=price*(1-v('discount')/100);
+
+const down=price*v('dp')/100;
+
+const balance=Math.max(0,net-down);
+
+const installment=balance/(v('years')*4);
+
+document.getElementById('net').textContent=money(net);
+
+document.getElementById('down').textContent=money(down);
+
+document.getElementById('balance').textContent=money(balance);
+
+document.getElementById('installment').textContent=money(installment);
+
+document.getElementById('maint').textContent=money(net*v('maintenance')/100);
+
+}
+
+ids.forEach(id=>document.getElementById(id).addEventListener('input',calculate));
+
+calculate();
+
+</script>
+
+</body>
+
+</html>
